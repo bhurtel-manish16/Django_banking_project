@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Analytics</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Open Sans', sans-serif;
+      background-color: #f2f2f2;
+    }
+
+    /* Header styles */
+    header {
+      margin: 0rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background-color: #fff;
+      padding: rem;
+      box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+      position: sticky;
+      /* Make the header stick to the top of the viewport */
+      top: 0;
+      z-index: 1;
+      /* Ensure the header is in front of other elements */
+      padding: 15px;
+    }
+
+    a {
+      color: #007bff;
+      text-decoration: none;
+      background-color: transparent;
+    }
+
+    h1 {
+      font-size: 2rem;
+      /* Increase the font size for emphasis */
+      font-weight: bold;
+      color: #3d4cb5;
+      /* Use a bold color for contrast */
+    }
+
+    h4 {
+      margin: 0;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #666;
+    }
+
+    nav {
+      background-color: #3d4cb5;
+      /* Use the same color as the h1 for consistency */
+      display: flex;
+      justify-content: center;
+      padding: 0.5rem 0;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      display: flex;
+    }
+
+    ul a {
+      text-decoration: none;
+    }
+
+    li {
+      list-style: none;
+      padding: 0.5rem;
+      border-bottom: 1px solid #eee;
+      color: #fff;
+      /* Make the text white for contrast */
+      /* {% comment %} text-align: center; {% endcomment %} */
+      cursor: pointer;
+      transition: background-color 0.2s ease-in-out;
+    }
+
+    li:hover {
+      background-color: #fff;
+      border-radius: 12px;
+      /* Invert the background and text colors on hover */
+      color: #3d4cb5;
+    }
+
+    li.active {
+      background-color: #fff;
+      color: #3d4cb5;
+      border-bottom: none;
+      border-radius: 12px;
+    }
+
+    /* New  */
+    .container {
+      display: flex;
+      justify-content: space-between;
+      margin: 2% 10%;
+    }
+
+    .spending {
+      width: 50%;
+      margin-right: 20px;
+    }
+
+    .history {
+      width: 50%;
+      margin-left: 20px;
+    }
+
+    .box {
+      background-color: #f2f2f2;
+      border-radius: 10px;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      margin-bottom: 10px;
+    }
+
+    .progress-bar {
+      position: relative;
+      height: 20px;
+      border-radius: 10px;
+      background-color: #dbedf3;
+    }
+
+    .progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      border-radius: 10px;
+      background-color: #6063a8;
+      transition: width 0.3s ease-in-out;
+    }
+
+    .progress-amount {
+      margin-top: 10px;
+      font-weight: bold;
+      text-align: center;
+    }
+
+    /* Transaction */
+    .transactions {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+
+
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 40px;
+    }
+
+    thead {
+      background-color: rgb(129, 168, 226);
+    }
+
+    th {
+      padding: 10px;
+      text-align: left;
+    }
+
+    td {
+      padding: 10px;
+      text-align: left;
+    }
+
+    .W {
+      color: red;
+    }
+
+    .D {
+      color: green;
+    }
+
+    tr:nth-child(even) {
+      background-color: #f2f2f2;
+    }
+
+    @media only screen and (min-width: 768px) {
+      .transactions {
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        grid-gap: 20px;
+      }
+
+      table {
+        margin-bottom: 0;
+      }
+    }
+
+    /* Graph */
+    .chart-container {
+      width: 90%;
+      max-width: 500px;
+      margin:2pc 0;
+    }
+
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    canvas {
+      max-height: 300px;
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <h1>Analytics</h1>
+    <img src="/static/img/login.png" width="72" height="70">
+    <b>
+      <h4>Welcome back, {{details.name}}!</h4>
+      <h4><a href="logout">Logout</a></h4>
+    </b>
+  </header>
+  <nav>
+    <ul>
+      <a href="dashboard">
+        <li id="dashboard-tab">Dashboard</li>
+      </a>
+      <a href="analytics">
+        <li class="active" id="analytics-tab">Analytics</li>
+      </a>
+      <a href="user">
+        <li id="user-tab">Analytics</li>
+      </a>
+    </ul>
+  </nav>
+
+
+
+  <div class="container">
+    <div class="spending">
+      <h2>Spending</h2>
+      <div class="box">
+        <strong>
+          <p>Total spending</p>
+        </strong>
+        <div class="progress-bar">
+          <div class="progress"></div>
+        </div>
+        <div class="progress-amount"></div>
+      </div>
+      <div class="chart-container">
+        <h2>Transaction Graph</h2>
+        <canvas id="myChart"></canvas>
+      </div>
+    </div>
+
+    <div class="history">
+      <h2>Transaction History</h2>
+      <div class="box">
+        <div class="transactions">
+          <table>
+            <thead>
+              <tr>
+                <th>Date</th>
+                <th>Description</th>
+                <th>Amount</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for item in trans.items %}
+              <tr>
+                <td>{{ item.1.date }}</td>
+                <td>{{ item.1.discr }}</td>
+                <td class="{{item.1.status}}">{{ item.1.amount }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+      // get the spending box and the progress bar
+      const spendingBox = document.querySelector(".spending .box");
+      const progressBar = document.querySelector(".progress-bar .progress");
+
+      // set the total spending and the current spending
+      const totalSpending = {{ transaction.total_balance }};
+      const currentSpending = {{ transaction.spent }};
+
+      // calculate the progress percentage
+      const progressPercentage = (currentSpending / totalSpending) * 100;
+
+      // set the width of the progress bar
+      progressBar.style.width = `${progressPercentage}%`;
+
+      // create a new div for the progress amount and add it to the spending box
+      const progressAmount = document.createElement("div");
+      progressAmount.classList.add("progress-amount");
+      progressAmount.textContent = `Spent $${currentSpending} of $${totalSpending}`;
+      spendingBox.appendChild(progressAmount);
+
+
+      //GRAPH
+
+      // Get the chart data from the Django context
+      var chartData = {{ chart| safe }};
+
+      // Extract the data from the chartData object
+      var data_x = chartData.dates;
+      var data_y = chartData.amounts;
+
+      // Create the chart data object
+      var chartDataObj = {
+        labels: data_x,
+        datasets: [{
+          label: 'Withdraw',
+          data: data_y,
+          borderColor: 'blue',
+          borderWidth: 1,
+          fill: false
+        }]
+      };
+
+      // Create the chart
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartDataObj,
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true
+              }
+            }]
+          }
+        }
+      });
+
+
+
+    </script>
+
+
+
+</body>
+
+</html>

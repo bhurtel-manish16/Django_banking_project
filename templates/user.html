@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+    <style>
+        body {
+            margin: 0%;
+            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+            color: #444;
+            background-color: #f7f7f7;
+        }
+
+        /* Header styles */
+        header {
+            margin: 0rem 1rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: rem;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.05);
+            position: sticky;
+            /* Make the header stick to the top of the viewport */
+            top: 0;
+            z-index: 1;
+            /* Ensure the header is in front of other elements */
+            padding: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            /* Increase the font size for emphasis */
+            font-weight: bold;
+            color: #3d4cb5;
+            /* Use a bold color for contrast */
+        }
+
+        h4 {
+            margin: 0;
+            font-weight: bold;
+            font-size: 1rem;
+            color: #666;
+        }
+
+        nav {
+            background-color: #3d4cb5;
+            /* Use the same color as the h1 for consistency */
+            display: flex;
+            justify-content: center;
+            padding: 0.5rem 0;
+        }
+
+        ul {
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        li {
+            list-style: none;
+            padding: 0.5rem;
+            border-bottom: 1px solid #eee;
+            color: #fff;
+            /* Make the text white for contrast */
+            /* {% comment %} text-align: center; {% endcomment %} */
+            cursor: pointer;
+            transition: background-color 0.2s ease-in-out;
+        }
+
+        li:hover {
+            background-color: #fff;
+            border-radius: 12px;
+            /* Invert the background and text colors on hover */
+            color: #3d4cb5;
+        }
+
+        li.active {
+            background-color: #fff;
+            color: #3d4cb5;
+            border-bottom: none;
+            border-radius: 12px;
+        }
+
+        /* Style for the form wrapper */
+        .form-wrapper {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin: 20px auto;
+            max-width: 900px;
+            padding: 20px;
+        }
+
+        /* Style for the user info section */
+        .user-info-section {
+            flex: 1;
+            margin-right: 20px;
+            min-width: 300px;
+        }
+
+        /* Style for the update email section */
+        .update-email-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        /* Style for the update password section */
+        .update-password-section {
+            margin-top: 20px;
+            min-width: 500px;
+        }
+
+        /* Style for the box */
+        .box {
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+
+        /* Style for the form */
+        .form {
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Style for the form group */
+        .form-group {
+            margin-bottom: 10px;
+        }
+
+        /* Style for the label */
+        label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        /* Style for the input field */
+        input {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 16px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        /* Style for the submit button */
+        .submit-button,
+        #change-email-btn {
+            background-color: #3d4cb5;
+            border: none;
+            border-radius: 10px;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+            padding: 10px;
+            transition: background-color 0.3s ease-in-out;
+        }
+
+        /* Style for the success message */
+        /* .success-message {
+            color: #4CAF50;
+            margin-top: 10px;
+        } */
+
+        a {
+            color: #007bff;
+            text-decoration: none;
+            background-color: transparent;
+        }
+
+        /* Madal CSS */
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.4);
+        }
+
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: fit-content;
+        }
+
+        #change-email-modal h2 {
+            margin-top: 0;
+        }
+
+        #change-email-modal p {
+            margin-bottom: 20px;
+        }
+
+        /* Button styles */
+
+        #confirm-change-email-btn,
+        #cancel-change-email-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+
+        #change-email-btn:hover,
+        #confirm-change-email-btn:hover,
+        #cancel-change-email-btn:hover {
+            background-color: #3e8e41;
+        }
+
+        #cancel-change-email-btn {
+            background-color: #bbb;
+            margin-right: 10px;
+        }
+
+        #cancel-change-email-btn:hover {
+            background-color: #999;
+        }
+
+        #confirm-change-email-btn {
+            margin-left: 10px;
+        }
+
+        /* Center the buttons */
+        .modal-content .button-container {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <h1>User Information</h1>
+        <img src="/static/img/login.png" width="72" height="70">
+        <b>
+            <h4>Welcome back, {{name}}!</h4>
+            <h4><a href="logout">Logout</a></h4>
+        </b>
+    </header>
+    <nav>
+        <ul>
+            <a href="dashboard">
+                <li id="dashboard-tab">Dashboard
+            </a></li>
+            <li id="analytics-tab"><a href="analytics">Analytics</a></li>
+            <li class="active" id="users-tab"><a href="user">Users</a></li>
+        </ul>
+    </nav>
+
+    <div class="form-wrapper">
+        <div class="user-info-section box">
+            <h2>User Information</h2>
+            <div class="user-info">
+                <p><strong>Name:</strong> {{name}}</p>
+                <p><strong>Email:</strong> {{email}}</p>
+            </div>
+        </div>
+
+        <div class="update-email-section box">
+            <h2>Update Email</h2>
+            <form id="change-email-form" method="POST" action="user">
+                {% csrf_token %}
+                <label for="new-email">New Email:</label>
+                <input type="email" id="new-email" name="new-email" required>
+                <button type="submit" id="change-email-btn">Change Email</button>
+            </form>
+        </div>
+
+        <div class="update-password-section box">
+            <h2>Update Password</h2>
+            <form class="form" id="update-password-form" action="changePassword" method="POST">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="current-password">Current Password:</label>
+                    <input type="password" id="current-password" name="current-password"
+                        placeholder="Enter your current password" required>
+                </div>
+                <div class="form-group">
+                    <label for="new-password">New Password:</label>
+                    <input type="password" id="new-password" name="new-password" placeholder="Enter your new password"
+                        required>
+                </div>
+                <div class="form-group">
+                    <label for="confirm-password">Confirm Password:</label>
+                    <input type="password" id="confirm-password" name="confirm-password"
+                        placeholder="Confirm your new password" required>
+                </div>
+                <button type="submit" class="submit-button" id="changepasswordbtn">Save Changes</button>
+                <p class="success-message" id="update-password-success"></p>
+            </form>
+        </div>
+    </div>
+
+
+    <!-- Madal for change email -->
+    <div id="change-email-modal" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure?</h2>
+            <p>Your email address will be changed.</p>
+            <button id="confirm-change-email-btn">Yes, Change Email</button>
+            <button id="cancel-change-email-btn">Cancel</button>
+        </div>
+    </div>
+
+    <!-- Madal for change password -->
+    <div id="change-password-modal" class="modal">
+        <div class="modal-content">
+            <h2>Are you sure?</h2>
+            <p>Your password will be changed.</p>
+            <button id="confirm-change-passworrd-btn">Yes, Change Password</button>
+            <button id="cancel-change-password-btn">Cancel</button>
+        </div>
+    </div>
+
+    <!-- MADAL JS -->
+    <script>
+
+        // Get the modal element
+        const modal = document.getElementById("change-email-modal");
+
+        // Get the button that opens the modal
+        const changeEmailBtn = document.getElementById("change-email-btn");
+
+        // Get the button that confirms the email change
+        const confirmChangeEmailBtn = document.getElementById("confirm-change-email-btn");
+
+        // Get the button that cancels the email change
+        const cancelChangeEmailBtn = document.getElementById("cancel-change-email-btn");
+
+        // Get the form element
+        const form = document.getElementById("change-email-form");
+
+        // Add event listener to the form submit event
+        form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            modal.style.display = "block";
+        });
+
+        // Add event listener to the confirm button
+        confirmChangeEmailBtn.addEventListener("click", function (event) {
+            // Submit the form
+            form.submit();
+        });
+
+        // Add event listener to the cancel button
+        cancelChangeEmailBtn.addEventListener("click", function (event) {
+            modal.style.display = "none";
+            window.location.replace("user");
+        });
+
+
+        //change password
+                
+        const modal2 = document.getElementById("change-password-modal");
+        const changePasswordBtn = document.getElementById("changepasswordbtn");
+        const confirmPasswordBtn = document.getElementById("confirm-change-passworrd-btn");
+        const cancelChangePasswordBtn = document.getElementById(" cancel-change-password-btn");
+        const pass_form = document.getElementById("update-password-form")
+        document.getElementById("pass_form").action = "POST";
+
+        pass_form.addEventListener("submit", function (event) {
+            event.preventDefault();
+            modal2.style.display = "block";
+        });
+
+        confirmPasswordBtn.addEventListener("click", function (event) {
+            // Submit the form
+            pass_form.submit();
+        });
+
+        cancelChangePasswordBtn.addEventListener("click", function (event) {
+            modal2.style.display = "none";
+            window.location.replace("user");
+        });
+    </script>
+</body>
+
+</html>
