@@ -12,8 +12,7 @@ import datetime
 import pyqrcode
 
 
-#password for john: John213_1
-#password for mannish: Manish@123, Himesh123!
+
 # Create your views here.
 def loginuser(request):
     if request.method == "POST":
